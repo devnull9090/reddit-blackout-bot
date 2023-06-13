@@ -240,6 +240,22 @@ function updateSubreddit(data, _new = false) {
                     "content": `${dark} out of ${amount} (${percent}%) - ${message}`
                 };
                 const color = colorMap[group] || "3092271";
+                const fields = [];
+
+                if (queuedMessagesPrivate.length > 0) {
+                    fields.push({
+                        "name": "Subreddits that have gone dark",
+                        "value": queuedMessagesPrivate.join("\n")
+                    });
+                }
+
+                if (queuedMessagesPublic.length > 0) {
+                    fields.push({
+                        "name": "Subreddits that have gone public",
+                        "value": queuedMessagesPublic.join("\n")
+                    });
+                }
+
                 const data_embed = {
                     "content": null,
                     "embeds": [{
@@ -250,15 +266,7 @@ function updateSubreddit(data, _new = false) {
                             "text": "Reddit-blackout-bot by devnull9090",
                             "icon_url": "https://i.imgur.com/tl2KzNW.gif"
                         },
-                        "fields": [{
-                                "name": "Subreddits that have gone dark",
-                                "value": queuedMessagesPrivate.join("\n")
-                            },
-                            {
-                                "name": "Subreddits that have gone public",
-                                "value": queuedMessagesPublic.join("\n")
-                            }
-                        ]
+                        "fields": fields
                     }]
                 };
 
