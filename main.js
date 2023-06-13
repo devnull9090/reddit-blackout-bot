@@ -41,6 +41,22 @@ const emojiMap = {
     "": "🔵"
 };
 
+const colorMap = {
+    "40+ million": "16724838",
+    "30+ million": "16724947",
+    "20+ million": "10695679",
+    "10+ million": "7812095",
+    "5+ million": "3370495",
+    "1+ million": "3389695",
+    "500k+": "3396607",
+    "250k+": "3407752",
+    "100k+": "3407725",
+    "50k+": "11861811",
+    "5k+": "7434609",
+    "5k": "7434609",
+    "": "3092271"
+}
+
 // Twitch chat events
 client.on('message', (channel, tags, message, self) => {
     // Ignore echoed messages.
@@ -155,9 +171,13 @@ let lastMessageTime = new Date();
 let queuedMessagesPrivate = [];
 let queuedMessagesPublic = [];
 let message = '';
+let clearMessagesPrivate = false;
+let clearMessagesPublic = false;
 
 
 function updateSubreddit(data, _new = false) {
+    clearMessagesPrivate = false;
+    clearMessagesPublic = false;
     console.log('updateSubreddit: data is', data);
 
     let group = '';
@@ -201,14 +221,16 @@ function updateSubreddit(data, _new = false) {
                 message += "\n";
             }
             message += "Subreddits that have gone dark: " + queuedMessagesPrivate.join(", ");
-            queuedMessagesPrivate = [];
+            clearMessagesPrivate = true;
+            // queuedMessagesPrivate = [];
         }
         if (queuedMessagesPublic.length > 0) {
             if (message.length > 0) {
                 message += "\n";
             }
             message += "Subreddits that have gone public: " + queuedMessagesPublic.join(", ");
-            queuedMessagesPublic = [];
+            clearMessagesPublic = true;
+            // queuedMessagesPublic = [];
         }
         lastMessageTime = new Date();
         if (message.length > 0) {
@@ -224,10 +246,40 @@ function updateSubreddit(data, _new = false) {
                 const data = {
                     "content": `${dark} out of ${amount} (${percent}%) - ${message}`
                 };
+                const color = colorMap[group] || "3092271";
+                const data_embed =
+                {
+                    "content": null,
+                    "embeds": [{
+                        "title": `Darkened Subreddits: ${percent}%`,
+                        "description": `Currently, ${dark} out of ${amount} participating subreddits are private.`,
+                        "color": color,
+                        "footer": {
+                            "text": "Bot by devnull9090"
+                        },
+                        "fields": [
+                            {
+                                "name": "Subreddits that have gone dark",
+                                "value": queuedMessagesPrivate.join("\n")
+                            },
+                            {
+                                "name": "Subreddits that have gone public",
+                                "value": queuedMessagesPublic.join("\n")
+                            }
+                        ]
+                    }]
+                }
 
-                axios.post(discordWebhookURL, data);
+
+                axios.post(discordWebhookURL, data_embed);
             }
             message = '';
         }
+    }
+    if(clearMessagesPublic) {
+        queuedMessagesPublic = [];
+    }
+    if(clearMessagesPrivate) {
+        queuedMessagesPrivate = [];
     }
 }
