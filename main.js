@@ -149,7 +149,8 @@ setInterval(() => {
 const subsToFilter = [
     "r/bi_irl",
     "r/suddenlybi",
-    "r/ennnnnnnnnnnnbbbbbby"
+    "r/ennnnnnnnnnnnbbbbbby",
+    "r/inzaghi"
 ];
 
 function fillSubredditsList(data) {
@@ -239,18 +240,17 @@ function updateSubreddit(data, _new = false) {
                     "content": `${dark} out of ${amount} (${percent}%) - ${message}`
                 };
                 const color = colorMap[group] || "3092271";
-                const data_embed =
-                {
+                const data_embed = {
                     "content": null,
                     "embeds": [{
                         "title": `Darkened Subreddits: ${percent}%`,
-                        "description": `Currently, ${dark} out of ${amount} participating subreddits are private.`,
+                        "description": `Currently, ${dark} out of ${amount} participating subreddits are dark.`,
                         "color": color,
                         "footer": {
-                            "text": "Bot by devnull9090"
+                            "text": "Reddit-blackout-bot by devnull9090",
+                            "icon_url": "https://i.imgur.com/tl2KzNW.gif"
                         },
-                        "fields": [
-                            {
+                        "fields": [{
                                 "name": "Subreddits that have gone dark",
                                 "value": queuedMessagesPrivate.join("\n")
                             },
@@ -260,8 +260,7 @@ function updateSubreddit(data, _new = false) {
                             }
                         ]
                     }]
-                }
-
+                };
 
                 axios.post(discordWebhookURL, data_embed);
             }
