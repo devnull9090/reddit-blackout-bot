@@ -171,13 +171,9 @@ let lastMessageTime = new Date();
 let queuedMessagesPrivate = [];
 let queuedMessagesPublic = [];
 let message = '';
-let clearMessagesPrivate = false;
-let clearMessagesPublic = false;
 
 
 function updateSubreddit(data, _new = false) {
-    clearMessagesPrivate = false;
-    clearMessagesPublic = false;
     console.log('updateSubreddit: data is', data);
 
     let group = '';
@@ -221,16 +217,12 @@ function updateSubreddit(data, _new = false) {
                 message += "\n";
             }
             message += "Subreddits that have gone dark: " + queuedMessagesPrivate.join(", ");
-            clearMessagesPrivate = true;
-            // queuedMessagesPrivate = [];
         }
         if (queuedMessagesPublic.length > 0) {
             if (message.length > 0) {
                 message += "\n";
             }
             message += "Subreddits that have gone public: " + queuedMessagesPublic.join(", ");
-            clearMessagesPublic = true;
-            // queuedMessagesPublic = [];
         }
         lastMessageTime = new Date();
         if (message.length > 0) {
