@@ -274,12 +274,8 @@ function updateSubreddit(data, _new = false) {
                 axios.post(discordWebhookURL, data_embed);
             }
             message = '';
+            queuedMessagesPublic = [];
+            queuedMessagesPrivate = [];
         }
-    }
-    if(clearMessagesPublic) {
-        queuedMessagesPublic = [];
-    }
-    if(clearMessagesPrivate) {
-        queuedMessagesPrivate = [];
     }
 }
