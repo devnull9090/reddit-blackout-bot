@@ -1,6 +1,8 @@
 # Reddit-Blackout-Bot
 
-A Twitch / Discord bot and WebSocket client that tracks subreddits going dark during the [reddit protests of 2023](https://www.reddit.com/r/Save3rdPartyApps/comments/13yh0jf/dont_let_reddit_kill_3rd_party_apps/). This bot listens for chat messages on Twitch streams and provides information about the current status of subreddits. It can also send messages to a Discord webhook.
+A Twitch / Discord bot and SSE client that tracks subreddits going dark during the [reddit protests of 2023](https://www.reddit.com/r/Save3rdPartyApps/comments/13yh0jf/dont_let_reddit_kill_3rd_party_apps/). This bot listens for chat messages on Twitch streams and provides information about the current status of subreddits. It can also send messages to a Discord webhook.
+
+Also check out https://darktotal.com/ for a real time list of subreddits that have gone dark.
 
 ![discord preview](images/discord-preview.png)
 ![twitch preview](images/twitch-preview.png)
@@ -13,11 +15,11 @@ Want to stay up-to-date on Reddit news without spending hours reading through ar
 
 ## Features
 
-- WebSocket client connected to an external socket server
+- SSE client connected to an external SSE server
 - Receives subreddit updates and emits events to update the data
 - Tracks the number of subreddits that have gone dark or public
 - Responds to Twitch chat commands with the status of subreddits
-- Sends messages to a Discord webhook with subreddit updates
+- Sends messages to a Twitch Chat & Discord webhook with subreddit updates
 
 ## Requirements
 
@@ -33,7 +35,7 @@ Want to stay up-to-date on Reddit news without spending hours reading through ar
 
 - `dotenv`: Loads environment variables from a `.env` file
 - `tmi.js`: Twitch Messaging Interface for building Twitch chat bots
-- `socket.io-client`: WebSocket client for communication with the socket server
+- `eventsource`: Client for receiving Server-Sent Events (SSE)
 - `axios`: HTTP client for sending Discord Webhook messages
 
 ## Usage
@@ -45,7 +47,7 @@ Want to stay up-to-date on Reddit news without spending hours reading through ar
 TWITCH_USERNAME=<your_twitch_username>
 TWITCH_OAUTH_TOKEN=<your_twitch_oauth_token>
 TWITCH_CHANNELS=<comma_separated_list_of_twitch_channels_to_monitor>
-SOCKET_URL=<websocket_server_url>
+SSE_URL=<url_of_sse_server>
 DISCORD_WEBHOOK=<discord_webhook_url>
 ```
 
